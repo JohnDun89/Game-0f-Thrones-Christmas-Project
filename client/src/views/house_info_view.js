@@ -25,3 +25,11 @@ HouseInfoView.prototype.wordCount = function(houses) {
       };
     };
   });
+};
+
+HouseInfoView.prototype.chartPopulator = function (keyValues) {
+  var newArray = Object.keys(keyValues).map(function(data){
+    return [data,keyValues[data]];
+  });
+  return newArray;
+};
