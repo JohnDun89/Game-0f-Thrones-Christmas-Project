@@ -65,11 +65,52 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+const HouseInfoView = __webpack_require__(1);
+const Ajax = __webpack_require__(2);
 
 const app = function () {
-  console.log('Im here');
+  const container = document.querySelector('#root');
+  const house_info_view = new HouseInfoView(chart);
+  let pageNumber = 1;
+
+  const url = `https://www.anapioficeandfire.com/api/houses?page=${pageNumber}&pageSize=5`;
+  const ajax = new Ajax();
+  // console.log('Im here');
+
+
+
+
 }
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (51:0)\nYou may need an appropriate loader to handle this file type.\n|   }]\n| })\n| }\n| ");
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+const Ajax = function () {}
+
+Ajax.prototype.get = function (url, onComplete) {
+  const request = new XMLHttpRequest();
+  request.open('GET', url);
+  request.send();
+
+  request.addEventListener('load', function () {
+    if (this.status !== 200) return;
+    const jsonString = this.responseText;
+    const data = JSON.parse(jsonString);
+    onComplete(data);
+  });
+}
+
+module.exports = Ajax;
 
 
 /***/ })
