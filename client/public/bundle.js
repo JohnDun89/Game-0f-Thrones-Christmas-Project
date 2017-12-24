@@ -68,34 +68,95 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 const HouseInfoView = __webpack_require__(1);
-const Ajax = __webpack_require__(2);
+const Ajax = __webpack_require__(3);
 
 const app = function () {
   const container = document.querySelector('#root');
-  const houseInfoView = new HouseInfoView(chart);
+  // const houseInfoView = new HouseInfoView();
   let pageNumber = 1;
 
-  const url = `https://www.anapioficeandfire.com/api/houses?page=${pageNumber}&pageSize=5`;
+  const url = `https://www.anapioficeandfire.com/api/houses?page=${pageNumber}&pageSize=50`;
   const ajax = new Ajax();
+
+  console.log(pageNumber);
   // console.log('Im here');
 
-  ajax.get(url, function(data) {
-    houseInfoView.render(data);
-  });
+
+  // const loadAllData = function() {
+  //   while (pageNumber <= 8)
+  //   {
+  //     ajax.get(`https://www.anapioficeandfire.com/api/houses?page=${pageNumber}&pageSize=50`, function(data) {
+  //       houseInfoView.wordCount(data);
+  //       console.log(data);
+  //       pageNumber + 1;
+  //     }
+  //   }
+  // }
 
 
 
-  
+  //-------------------------------------------------------------------Chart Code.
+
+
+Highcharts.chart('container', {
+  chart: {
+    type: 'column'
+  },
+  title: {
+    text: 'Most popular words in all House Words'
+  },
+  subtitle: {
+    text: ''
+  },
+  xAxis: {
+    type: 'category',
+    labels: {
+      rotation: -45,
+      style: {
+        fontSize: '8px',
+        fontFamily: 'Verdana, sans-serif'
+      }
+    }
+  },
+  yAxis: {
+    min: 0,
+    title: {
+      text: 'Word Count'
+    }
+  },
+  legend: {
+    enabled: false
+  },
+  tooltip: {
+    pointFormat: 'Word Occurs: <b>{point.y:1f} times</b>'
+  },
+  series: [{
+    name: 'Words',
+    data: ["Stark", "are"]
+    ,
+    dataLabels: {
+      enabled: false,
+      rotation: -90,
+      color: 'red',
+      align: 'right',
+      format: '{point.y:.1f}', // one decimal
+      y: 10, // 10 pixels down from the top
+      style: {
+        fontSize: '8px',
+        fontFamily: 'Verdana, sans-serif'
+      }
+    }
+  }]
+})
 }
-
-document.addEventListener('DOMContentLoaded', app);
+  document.addEventListener('DOMContentLoaded', app);
 
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-
+/* WEBPACK VAR INJECTION */(function(module) {
 const HouseInfoView = function(data) {
   this.data = data;
 }
@@ -131,9 +192,40 @@ HouseInfoView.prototype.chartPopulator = function (keyValues) {
   return newArray;
 };
 
+module.export = HouseInfoView
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports) {
 
 const Ajax = function () {}

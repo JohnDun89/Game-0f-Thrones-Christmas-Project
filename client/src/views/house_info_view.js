@@ -33,3 +33,5 @@ HouseInfoView.prototype.chartPopulator = function (keyValues) {
   });
   return newArray;
 };
+
+module.export = HouseInfoView
