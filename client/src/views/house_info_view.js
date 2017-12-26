@@ -3,10 +3,6 @@ const HouseInfoView = function(data) {
   this.data = data;
 }
 
-HouseInfoView.prototype.render =function (houses) {
-
-}
-
 HouseInfoView.prototype.wordCount = function(houses) {
   var wordCounts = {};
   var ul = document.querySelector('#count');
@@ -25,6 +21,7 @@ HouseInfoView.prototype.wordCount = function(houses) {
       };
     };
   });
+  return wordCounts;
 };
 
 HouseInfoView.prototype.chartPopulator = function (keyValues) {
