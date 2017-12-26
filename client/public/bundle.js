@@ -68,15 +68,82 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 const HouseInfoView = __webpack_require__(1);
+const CharacterInfo = __webpack_require__(6);
 const Ajax = __webpack_require__(2);
 var _ = __webpack_require__(3);
 
 const app = function () {
   const container = document.querySelector('#root');
   const houseInfoView = new HouseInfoView(container);
+  const characterInfo = new CharacterInfo(container);
   const ajax = new Ajax();
 
+  const buttonDeadlyYears = document.querySelector('#character-button');
+  buttonDeadlyYears.addEventListener('click', function() {
+  let allDeaths = {};
+   let pageNumber = 1;
+   while (pageNumber <= 20) {
+     pageNumber++;
+     ajax.get(`https://www.anapioficeandfire.com/api/characters?page=${pageNumber}&pageSize=50`, function(data) {
+       onePageOfDeaths = characterInfo.dateOfDeathCount(data);
+       _.merge(allDeaths, onePageOfDeaths)
+       console.log('allDeaths', allDeaths);
+       // onePage = characterInfo.chartPopulator(wordCount);
+       // console.log('onepage',onePage);
+       Highcharts.chart('container', {
+         chart: {
+           type: 'column'
+         },
+         title: {
+           text: 'Most Deadly Years(For Important Characters)'
+         },
+         subtitle: {
+           text: ''
+         },
+         xAxis: {
+           type: 'category',
+           labels: {
+             rotation: -45,
+             style: {
+               fontSize: '8px',
+               fontFamily: 'Verdana, sans-serif'
+             }
+           }
+         },
+         yAxis: {
+           min: 0,
+           title: {
+             text: 'Total Deaths'
+           }
+         },
+         legend: {
+           enabled: false
+         },
+         tooltip: {
+           pointFormat: 'Deaths of mentioned Characters: <b>{point.y:1f}  </b>'
+         },
+         series: [{
+           name: 'Year',
+           data: houseInfoView.chartPopulator(allDeaths)
+           ,
+           dataLabels: {
+             enabled: false,
+             rotation: -90,
+             color: 'red',
+             align: 'right',
+             format: '{point.y:.1f}', // one decimal
+             y: 10, // 10 pixels down from the top
+             style: {
+               fontSize: '8px',
+               fontFamily: 'Verdana, sans-serif'
+             }
+           }
+         }]
+       })
+     })
+   }
 
+ })
 
   const button = document.querySelector('#more-houses');
   button.addEventListener('click', function() {
@@ -87,8 +154,8 @@ const app = function () {
       ajax.get(`https://www.anapioficeandfire.com/api/houses?page=${pageNumber}&pageSize=50`, function(data) {
         wordCount = houseInfoView.wordCount(data);
         _.merge(allOcurances, wordCount)
-        console.log('wordcount',wordCount);
-        console.log('allOcurances', allOcurances);
+        // console.log('wordcount',wordCount);
+        // console.log('allOcurances', allOcurances);
         // onePage = houseInfoView.chartPopulator(wordCount);
         // console.log('onepage',onePage);
         Highcharts.chart('container', {
@@ -187,6 +254,8 @@ HouseInfoView.prototype.wordCount = function(houses) {
   });
   return wordCounts;
 };
+
+
 
 HouseInfoView.prototype.chartPopulator = function (keyValues) {
   var newArray = Object.keys(keyValues).map(function(data){
@@ -17366,6 +17435,12 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (49:0)\nYou may need an appropriate loader to handle this file type.\n| };\n| \n| }\n| \n| module.exports = CharacterInfo;");
 
 /***/ })
 /******/ ]);

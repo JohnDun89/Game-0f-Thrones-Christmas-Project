@@ -24,6 +24,8 @@ HouseInfoView.prototype.wordCount = function(houses) {
   return wordCounts;
 };
 
+
+
 HouseInfoView.prototype.chartPopulator = function (keyValues) {
   var newArray = Object.keys(keyValues).map(function(data){
     return [data,keyValues[data]];
