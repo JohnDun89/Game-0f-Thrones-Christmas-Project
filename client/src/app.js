@@ -3,6 +3,7 @@ const Ajax = require('./services/ajax.js');
 
 const app = function () {
   const container = document.querySelector('#root');
+  const houseInfoView = new HouseInfoView(container);
   // const houseInfoView = new HouseInfoView();
   let pageNumber = 1;
 
@@ -10,6 +11,17 @@ const app = function () {
   const ajax = new Ajax();
 
   console.log(pageNumber);
+
+  const button = document.querySelector('#more-houses');
+  button.addEventListener('click', function() {
+    pageNumber++;
+    ajax.get(`https://www.anapioficeandfire.com/api/houses?page=${pageNumber}&pageSize=50`, function(data) {
+
+      houseInfoView.wordCount(data)
+      console.log(data);
+    })
+
+  })
   // console.log('Im here');
 
 

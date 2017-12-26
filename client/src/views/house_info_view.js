@@ -34,4 +34,4 @@ HouseInfoView.prototype.chartPopulator = function (keyValues) {
   return newArray;
 };
 
-module.export = HouseInfoView
+module.exports = HouseInfoView;

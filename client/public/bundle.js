@@ -72,6 +72,7 @@ const Ajax = __webpack_require__(3);
 
 const app = function () {
   const container = document.querySelector('#root');
+  const houseInfoView = new HouseInfoView(container);
   // const houseInfoView = new HouseInfoView();
   let pageNumber = 1;
 
@@ -79,6 +80,17 @@ const app = function () {
   const ajax = new Ajax();
 
   console.log(pageNumber);
+
+  const button = document.querySelector('#more-houses');
+  button.addEventListener('click', function() {
+    pageNumber++;
+    ajax.get(`https://www.anapioficeandfire.com/api/houses?page=${pageNumber}&pageSize=50`, function(data) {
+
+      houseInfoView.wordCount(data)
+      console.log(data);
+    })
+
+  })
   // console.log('Im here');
 
 
@@ -154,9 +166,9 @@ Highcharts.chart('container', {
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-/* WEBPACK VAR INJECTION */(function(module) {
+
 const HouseInfoView = function(data) {
   this.data = data;
 }
@@ -192,39 +204,11 @@ HouseInfoView.prototype.chartPopulator = function (keyValues) {
   return newArray;
 };
 
-module.export = HouseInfoView
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module)))
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-module.exports = function(module) {
-	if(!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if(!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
+module.exports = HouseInfoView;
 
 
 /***/ }),
+/* 2 */,
 /* 3 */
 /***/ (function(module, exports) {
 
