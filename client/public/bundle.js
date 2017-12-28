@@ -90,6 +90,7 @@ const app = function () {
        console.log('allDeaths', allDeaths);
        // onePage = characterInfo.chartPopulator(wordCount);
        // console.log('onepage',onePage);
+
        Highcharts.chart('container', {
          chart: {
            type: 'column'
@@ -211,6 +212,71 @@ const app = function () {
       })
     }
 
+  })
+
+  const loyaltyButton = document.querySelector('#loyalty-button');
+  loyaltyButton.addEventListener('click', function() {
+    let allHouses = {};
+    console.log('all houses', allHouses);
+     let pageNumber = 1;
+     while (pageNumber <= 10) {
+       pageNumber++;
+       ajax.get(`https://www.anapioficeandfire.com/api/characters?page=${pageNumber}&pageSize=50`, function(data) {
+         onePageOfCharacters = characterInfo.houseLoyalty(data);
+         _.merge(allHouses, onePageOfDeaths)
+
+         Highcharts.chart('container', {
+           chart: {
+             type: 'column'
+           },
+           title: {
+             text: 'Most popular words in all House Words'
+           },
+           subtitle: {
+             text: ''
+           },
+           xAxis: {
+             type: 'category',
+             labels: {
+               rotation: -45,
+               style: {
+                 fontSize: '8px',
+                 fontFamily: 'Verdana, sans-serif'
+               }
+             }
+           },
+           yAxis: {
+             min: 0,
+             title: {
+               text: 'Word Count'
+             }
+           },
+           legend: {
+             enabled: false
+           },
+           tooltip: {
+             pointFormat: 'Word Occurs: <b>{point.y:1f} times</b>'
+           },
+           series: [{
+             name: 'Words',
+             data: houseInfoView.chartPopulator(allOcurances)
+             ,
+             dataLabels: {
+               enabled: false,
+               rotation: -90,
+               color: 'red',
+               align: 'right',
+               format: '{point.y:.1f}', // one decimal
+               y: 10, // 10 pixels down from the top
+               style: {
+                 fontSize: '8px',
+                 fontFamily: 'Verdana, sans-serif'
+               }
+             }
+           }]
+         })
+       })
+     }
   })
 
 
@@ -17438,9 +17504,63 @@ module.exports = function(module) {
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-throw new Error("Module parse failed: Unexpected token (49:0)\nYou may need an appropriate loader to handle this file type.\n| };\n| \n| }\n| \n| module.exports = CharacterInfo;");
+const Ajax = __webpack_require__(2);
+
+
+const CharacterInfo = function (container) {
+  this.container = container;
+}
+
+CharacterInfo.prototype.dateOfDeathCount = function (characters) {
+  var deathInYear = {};
+  characters.forEach(function(character, index){
+    allDeathData = character.died;
+    dateOfDeath = allDeathData.replace(/\D/g,'');
+    console.log(dateOfDeath);
+    if (dateOfDeath === '') {
+      return;
+    };
+    arrayOfDeaths = dateOfDeath.split(/\s+/);
+    for (var i = 0; i < arrayOfDeaths.length; i++) {
+      death = arrayOfDeaths[i];
+      if (!deathInYear[death]) {
+        deathInYear[death] = 1;
+      } else {
+        deathInYear[death]++;
+      };
+    };
+  });
+  return deathInYear;
+};
+
+
+CharacterInfo.prototype.houseLoyalty = function (characters) {
+  const ajax = new Ajax();
+  var allHousescount = {};
+  characters.forEach(function(character, index){
+    aligenceUrl = character.allegiances[0];
+    console.log(aligenceUrl);
+    ajax.get(aligenceUrl, function(data) {
+      houseTitle = house.name(data);
+      console.log(houseTitle);
+    })
+    arrayOfHouses = houseTitle.split(/\s+/);
+    for (var i = 0; i < arrayOfHouses.length; i++) {
+      house = arrayOfHouses[i]
+      if (!allHousescount[house]) {
+        allHousescount[house] = 1;
+      } else{
+        allHousescount[house]++;
+      }
+    }
+  })
+  return allHousescount;
+}
+
+module.exports = CharacterInfo;
+
 
 /***/ })
 /******/ ]);
