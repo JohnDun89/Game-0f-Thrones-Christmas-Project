@@ -4,10 +4,9 @@ body {
   align-items: center;
   align-content: center;
   justify-content: center;
-  background-color: teal;
+  background-color: #fff;
   font-family: 'Tangerine', cursive;
-  background-image: url(https://i.pinimg.com/originals/93/00/9b/93009b708d5ae177030969ac37dc427c.jpg);
-  background-image:
+  /*background-image: url(https://i.pinimg.com/originals/93/00/9b/93009b708d5ae177030969ac37dc427c.jpg);*/
 }
 
 .button-style {
@@ -15,11 +14,16 @@ body {
   font-family: 'Rock Salt', cursive;
   background-color: yellow;
   background-color: #FAEBD7;
+  margin: 10px;
+  padding: 5px;
+}
+
+.box {
+
 }
 
 #header {
   font-size: 50px;
-
 }
 
 #top-nav {
