@@ -121,7 +121,7 @@ const app = function () {
         _.merge(allDeaths, onePageOfDeaths)
         console.log('allDeaths', allDeaths);
         formatedHousesForChart = houseInfoView.chartPopulator(allDeaths);
-        chart.lineChart(formatedHousesForChart);
+        chart.lineChart(formatedHousesForChart,'Most Deadly Years');
       })
     }
 
@@ -137,7 +137,7 @@ const app = function () {
         wordCount = houseInfoView.wordCount(data);
         _.merge(allOcurances, wordCount)
         formatedHousesForChart = houseInfoView.chartPopulator(allOcurances)
-        chart.lineChart(formatedHousesForChart);
+        chart.lineChart(formatedHousesForChart, "House words Occurace");
       })
     }
 
@@ -17452,13 +17452,13 @@ const ChartView = function(data) {
   this.data = data;
 }
 
-ChartView.prototype.lineChart = function (data) {
+ChartView.prototype.lineChart = function (data, title) {
   Highcharts.chart('container', {
     chart: {
       type: 'column'
     },
     title: {
-      text: 'Most Deadly Years(For Important Characters)'
+      text: title
     },
     subtitle: {
       text: ''

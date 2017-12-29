@@ -2,13 +2,13 @@ const ChartView = function(data) {
   this.data = data;
 }
 
-ChartView.prototype.lineChart = function (data) {
+ChartView.prototype.lineChart = function (data, title) {
   Highcharts.chart('container', {
     chart: {
       type: 'column'
     },
     title: {
-      text: 'Most Deadly Years(For Important Characters)'
+      text: title
     },
     subtitle: {
       text: ''

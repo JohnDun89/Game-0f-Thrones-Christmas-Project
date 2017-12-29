@@ -30,7 +30,7 @@ const app = function () {
         _.merge(allDeaths, onePageOfDeaths)
         console.log('allDeaths', allDeaths);
         formatedHousesForChart = houseInfoView.chartPopulator(allDeaths);
-        chart.lineChart(formatedHousesForChart);
+        chart.lineChart(formatedHousesForChart,'Most Deadly Years');
       })
     }
 
@@ -46,7 +46,7 @@ const app = function () {
         wordCount = houseInfoView.wordCount(data);
         _.merge(allOcurances, wordCount)
         formatedHousesForChart = houseInfoView.chartPopulator(allOcurances)
-        chart.lineChart(formatedHousesForChart);
+        chart.lineChart(formatedHousesForChart, "House words Occurace");
       })
     }
 
