@@ -60,17 +60,39 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports) {
+
+const Ajax = function () {}
+
+Ajax.prototype.get = function (url, onComplete) {
+  const request = new XMLHttpRequest();
+  request.open('GET', url);
+  request.send();
+
+  request.addEventListener('load', function () {
+    if (this.status !== 200) return;
+    const jsonString = this.responseText;
+    const data = JSON.parse(jsonString);
+    onComplete(data);
+  });
+}
+
+  module.exports = Ajax;
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const HouseInfoView = __webpack_require__(1);
-const CharacterInfo = __webpack_require__(6);
-const Ajax = __webpack_require__(2);
-var _ = __webpack_require__(3);
+const HouseInfoView = __webpack_require__(2);
+const CharacterInfo = __webpack_require__(3);
+const Ajax = __webpack_require__(0);
+var _ = __webpack_require__(4);
 
 const app = function () {
   const container = document.querySelector('#root');
@@ -80,75 +102,75 @@ const app = function () {
 
   const buttonDeadlyYears = document.querySelector('#character-button');
   buttonDeadlyYears.addEventListener('click', function() {
-  let allDeaths = {};
-   let pageNumber = 1;
-   while (pageNumber <= 20) {
-     pageNumber++;
-     ajax.get(`https://www.anapioficeandfire.com/api/characters?page=${pageNumber}&pageSize=50`, function(data) {
-       onePageOfDeaths = characterInfo.dateOfDeathCount(data);
-       _.merge(allDeaths, onePageOfDeaths)
-       console.log('allDeaths', allDeaths);
-       // onePage = characterInfo.chartPopulator(wordCount);
-       // console.log('onepage',onePage);
+    let allDeaths = {};
+    let pageNumber = 1;
+    while (pageNumber <= 20) {
+      pageNumber++;
+      ajax.get(`https://www.anapioficeandfire.com/api/characters?page=${pageNumber}&pageSize=50`, function(data) {
+        onePageOfDeaths = characterInfo.dateOfDeathCount(data);
+        _.merge(allDeaths, onePageOfDeaths)
+        console.log('allDeaths', allDeaths);
+        // onePage = characterInfo.chartPopulator(wordCount);
+        // console.log('onepage',onePage);
 
-       Highcharts.chart('container', {
-         chart: {
-           type: 'column'
-         },
-         title: {
-           text: 'Most Deadly Years(For Important Characters)'
-         },
-         subtitle: {
-           text: ''
-         },
-         xAxis: {
-           type: 'category',
-           labels: {
-             rotation: -45,
-             style: {
-               fontSize: '8px',
-               fontFamily: 'Verdana, sans-serif'
-             }
-           }
-         },
-         yAxis: {
-           min: 0,
-           title: {
-             text: 'Total Deaths'
-           }
-         },
-         legend: {
-           enabled: false
-         },
-         tooltip: {
-           pointFormat: 'Deaths of mentioned Characters: <b>{point.y:1f}  </b>'
-         },
-         series: [{
-           name: 'Year',
-           data: houseInfoView.chartPopulator(allDeaths)
-           ,
-           dataLabels: {
-             enabled: false,
-             rotation: -90,
-             color: 'red',
-             align: 'right',
-             format: '{point.y:.1f}', // one decimal
-             y: 10, // 10 pixels down from the top
-             style: {
-               fontSize: '8px',
-               fontFamily: 'Verdana, sans-serif'
-             }
-           }
-         }]
-       })
-     })
-   }
+        Highcharts.chart('container', {
+          chart: {
+            type: 'column'
+          },
+          title: {
+            text: 'Most Deadly Years(For Important Characters)'
+          },
+          subtitle: {
+            text: ''
+          },
+          xAxis: {
+            type: 'category',
+            labels: {
+              rotation: -45,
+              style: {
+                fontSize: '8px',
+                fontFamily: 'Verdana, sans-serif'
+              }
+            }
+          },
+          yAxis: {
+            min: 0,
+            title: {
+              text: 'Total Deaths'
+            }
+          },
+          legend: {
+            enabled: false
+          },
+          tooltip: {
+            pointFormat: 'Deaths of mentioned Characters: <b>{point.y:1f}  </b>'
+          },
+          series: [{
+            name: 'Year',
+            data: houseInfoView.chartPopulator(allDeaths)
+            ,
+            dataLabels: {
+              enabled: false,
+              rotation: -90,
+              color: 'red',
+              align: 'right',
+              format: '{point.y:.1f}', // one decimal
+              y: 10, // 10 pixels down from the top
+              style: {
+                fontSize: '8px',
+                fontFamily: 'Verdana, sans-serif'
+              }
+            }
+          }]
+        })
+      })
+    }
 
- })
+  })
 
   const button = document.querySelector('#more-houses');
   button.addEventListener('click', function() {
-     let allOcurances = {};
+    let allOcurances = {};
     let pageNumber = 1;
     while (pageNumber <= 8) {
       pageNumber++;
@@ -216,83 +238,59 @@ const app = function () {
 
   const loyaltyButton = document.querySelector('#loyalty-button');
   loyaltyButton.addEventListener('click', function() {
-    let allHouses = {};
+    let allHouses = [];
     console.log('all houses', allHouses);
-     let pageNumber = 1;
-     while (pageNumber <= 10) {
-       pageNumber++;
-       ajax.get(`https://www.anapioficeandfire.com/api/characters?page=${pageNumber}&pageSize=50`, function(data) {
-         onePageOfCharacters = characterInfo.houseLoyalty(data);
-         _.merge(allHouses, onePageOfDeaths)
+    let pageNumber = 1;
+    while (pageNumber <= 10) {
+      pageNumber++;
+      ajax.get(`https://www.anapioficeandfire.com/api/characters?page=${pageNumber}&pageSize=50`, function(data) {
+        onePageOfCharacters = characterInfo.houseLoyalty(data);
+        _.merge(allHouses, onePageOfCharacters)
 
-         Highcharts.chart('container', {
-           chart: {
-             type: 'column'
-           },
-           title: {
-             text: 'Most popular words in all House Words'
-           },
-           subtitle: {
-             text: ''
-           },
-           xAxis: {
-             type: 'category',
-             labels: {
-               rotation: -45,
-               style: {
-                 fontSize: '8px',
-                 fontFamily: 'Verdana, sans-serif'
-               }
-             }
-           },
-           yAxis: {
-             min: 0,
-             title: {
-               text: 'Word Count'
-             }
-           },
-           legend: {
-             enabled: false
-           },
-           tooltip: {
-             pointFormat: 'Word Occurs: <b>{point.y:1f} times</b>'
-           },
-           series: [{
-             name: 'Words',
-             data: houseInfoView.chartPopulator(allOcurances)
-             ,
-             dataLabels: {
-               enabled: false,
-               rotation: -90,
-               color: 'red',
-               align: 'right',
-               format: '{point.y:.1f}', // one decimal
-               y: 10, // 10 pixels down from the top
-               style: {
-                 fontSize: '8px',
-                 fontFamily: 'Verdana, sans-serif'
-               }
-             }
-           }]
-         })
-       })
-     }
+        Highcharts.chart('container', {
+          chart: {
+            type: 'pie',
+            options3d: {
+              enabled: true,
+              alpha: 45
+            }
+          },
+          title: {
+            text: 'Contents of Highsoft\'s weekly fruit delivery'
+          },
+          subtitle: {
+            text: '3D donut in Highcharts'
+          },
+          plotOptions: {
+            pie: {
+              innerSize: 100,
+              depth: 45
+            }
+          },
+          series: [{
+            name: 'Delivered amount',
+            data: [
+              characterInfo.houseLoyalty(allHouses)
+            ]
+          }]
+        });
+      })
+    }
+
+
+
+
+
+
+
   })
-
-
-
-
-
-
-
-
 }
 
 document.addEventListener('DOMContentLoaded', app);
 
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports) {
 
 
@@ -334,29 +332,67 @@ module.exports = HouseInfoView;
 
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports) {
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
 
-const Ajax = function () {}
+const Ajax = __webpack_require__(0);
 
-Ajax.prototype.get = function (url, onComplete) {
-  const request = new XMLHttpRequest();
-  request.open('GET', url);
-  request.send();
 
-  request.addEventListener('load', function () {
-    if (this.status !== 200) return;
-    const jsonString = this.responseText;
-    const data = JSON.parse(jsonString);
-    onComplete(data);
-  });
+const CharacterInfo = function (container) {
+  this.container = container;
 }
 
-module.exports = Ajax;
+CharacterInfo.prototype.dateOfDeathCount = function (characters) {
+  var deathInYear = {};
+  characters.forEach(function(character, index){
+    allDeathData = character.died;
+    dateOfDeath = allDeathData.replace(/\D/g,'');
+    console.log(dateOfDeath);
+    if (dateOfDeath === '') {
+      return;
+    };
+    arrayOfDeaths = dateOfDeath.split(/\s+/);
+    for (var i = 0; i < arrayOfDeaths.length; i++) {
+      death = arrayOfDeaths[i];
+      if (!deathInYear[death]) {
+        deathInYear[death] = 1;
+      } else {
+        deathInYear[death]++;
+      };
+    };
+  });
+  return deathInYear;
+};
+
+
+CharacterInfo.prototype.houseLoyalty = function (characters) {
+  const ajax = new Ajax();
+  var allHousescount = {};
+  characters.forEach(function(character, index){
+    aligenceUrl = character.allegiances[0];
+    // console.log('url =',aligenceUrl);
+    ajax.get(aligenceUrl, function(house) {
+      houseTitle = house.name;
+      // console.log(houseTitle);
+      for (var i = 0; i < houseTitle.length; i++) {
+        house = houseTitle[i]
+        if (!allHousescount[house]) {
+          allHousescount[house] = 1;
+        } else{
+          allHousescount[house]++;
+        }
+      }
+    })
+  })
+  console.log(allHousescount);
+  return allHousescount;
+}
+
+module.exports = CharacterInfo;
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -17445,10 +17481,10 @@ module.exports = Ajax;
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(5)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(6)(module)))
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 var g;
@@ -17475,7 +17511,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -17500,66 +17536,6 @@ module.exports = function(module) {
 	}
 	return module;
 };
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const Ajax = __webpack_require__(2);
-
-
-const CharacterInfo = function (container) {
-  this.container = container;
-}
-
-CharacterInfo.prototype.dateOfDeathCount = function (characters) {
-  var deathInYear = {};
-  characters.forEach(function(character, index){
-    allDeathData = character.died;
-    dateOfDeath = allDeathData.replace(/\D/g,'');
-    console.log(dateOfDeath);
-    if (dateOfDeath === '') {
-      return;
-    };
-    arrayOfDeaths = dateOfDeath.split(/\s+/);
-    for (var i = 0; i < arrayOfDeaths.length; i++) {
-      death = arrayOfDeaths[i];
-      if (!deathInYear[death]) {
-        deathInYear[death] = 1;
-      } else {
-        deathInYear[death]++;
-      };
-    };
-  });
-  return deathInYear;
-};
-
-
-CharacterInfo.prototype.houseLoyalty = function (characters) {
-  const ajax = new Ajax();
-  var allHousescount = {};
-  characters.forEach(function(character, index){
-    aligenceUrl = character.allegiances[0];
-    console.log(aligenceUrl);
-    ajax.get(aligenceUrl, function(data) {
-      houseTitle = house.name(data);
-      console.log(houseTitle);
-    })
-    arrayOfHouses = houseTitle.split(/\s+/);
-    for (var i = 0; i < arrayOfHouses.length; i++) {
-      house = arrayOfHouses[i]
-      if (!allHousescount[house]) {
-        allHousescount[house] = 1;
-      } else{
-        allHousescount[house]++;
-      }
-    }
-  })
-  return allHousescount;
-}
-
-module.exports = CharacterInfo;
 
 
 /***/ })

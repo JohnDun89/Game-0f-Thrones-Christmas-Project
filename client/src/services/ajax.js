@@ -13,4 +13,4 @@ Ajax.prototype.get = function (url, onComplete) {
   });
 }
 
-module.exports = Ajax;
+  module.exports = Ajax;

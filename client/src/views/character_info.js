@@ -33,21 +33,21 @@ CharacterInfo.prototype.houseLoyalty = function (characters) {
   var allHousescount = {};
   characters.forEach(function(character, index){
     aligenceUrl = character.allegiances[0];
-    console.log(aligenceUrl);
-    ajax.get(aligenceUrl, function(data) {
-      houseTitle = house.name(data);
-      console.log(houseTitle);
-    })
-    arrayOfHouses = houseTitle.split(/\s+/);
-    for (var i = 0; i < arrayOfHouses.length; i++) {
-      house = arrayOfHouses[i]
-      if (!allHousescount[house]) {
-        allHousescount[house] = 1;
-      } else{
-        allHousescount[house]++;
+    // console.log('url =',aligenceUrl);
+    ajax.get(aligenceUrl, function(house) {
+      houseTitle = house.name;
+      // console.log(houseTitle);
+      for (var i = 0; i < houseTitle.length; i++) {
+        house = houseTitle[i]
+        if (!allHousescount[house]) {
+          allHousescount[house] = 1;
+        } else{
+          allHousescount[house]++;
+        }
       }
-    }
+    })
   })
+  console.log(allHousescount);
   return allHousescount;
 }
 
