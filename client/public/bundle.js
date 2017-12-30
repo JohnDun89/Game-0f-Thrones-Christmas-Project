@@ -186,6 +186,7 @@ const HouseInfoView = function(container) {
 }
 
 HouseInfoView.prototype.render = function (houses) {
+  createdRegions = [];
 //In here we want somthing to track created regions
 
 //we need to check if the region exists
@@ -195,13 +196,18 @@ HouseInfoView.prototype.render = function (houses) {
 //if not break and create a new one
 
   houses.forEach(function (house) {
+    if (house.region === '') {
+      return;
+    }
     const region = this.createRegion(house.region);
+    createdRegions.push(house.region);
     const header = this.createHeader(house.name);
     const ul = this.createUnorderedList();
     this.createListItem('Region', house.region, ul);
     this.createListItem('Coat of Arms', house.coatOfArms, ul);
     this.createListItem('Words', house.words, ul);
     this.createListItem('Titles', house.titles.join(', '), ul);
+    console.log(createdRegions);
   }.bind(this));
 
 }
