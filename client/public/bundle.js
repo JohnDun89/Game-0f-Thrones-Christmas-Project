@@ -102,12 +102,26 @@ const app = function () {
   const houseInfoView = new HouseInfoView(container);
   const characterInfo = new CharacterInfo(container);
   const ajax = new Ajax();
-  let pageNumber = 1;
-  ajax.get(`https://www.anapioficeandfire.com/api/houses?page=${pageNumber}&pageSize=50`, function(data) {
-    pageNumber++;
-    console.log(data);
-    houseInfoView.render(data);
-  });
+
+
+  const showHouses = document.querySelector('#houses-button');
+  showHouses.addEventListener('click',function(){
+    let allHouses = [];
+    let pageNumber = 1;
+    while (pageNumber <= 10) {
+      pageNumber++;
+      ajax.get(`https://www.anapioficeandfire.com/api/houses?page=${pageNumber}&pageSize=50`, function(data) {
+        houseInfoView.render(data);
+        console.log('data',data);
+        console.log('all data',allHouses);
+
+      });
+    }
+
+
+  })
+
+
 
 
   const buttonDeadlyYears = document.querySelector('#character-button');
@@ -170,20 +184,28 @@ document.addEventListener('DOMContentLoaded', app);
 /***/ (function(module, exports) {
 
 
-const HouseInfoView = function(data) {
-  this.data = data;
+const HouseInfoView = function(container) {
+  this.container = container;
 }
 
 HouseInfoView.prototype.render = function (houses) {
   houses.forEach(function (house) {
-    const header = this.createHeader(house.name)
-    const ul = this.createUnorderedList();
-    this.createListItem('Region', house.region, ul);
-    this.createListItem('Coat of Arms', house.coatOfArms, ul);
-    this.createListItem('Words', house.words, ul);
-    this.createListItem('Titles', house.titles.join(', '), ul);
-  }.bind(this));
+  document
+  const header = this.createHeader(house.name)
+  const ul = this.createUnorderedList();
+  this.createListItem('Region', house.region, ul);
+  this.createListItem('Coat of Arms', house.coatOfArms, ul);
+  this.createListItem('Words', house.words, ul);
+  this.createListItem('Titles', house.titles.join(', '), ul);
+}.bind(this));
 }
+
+HouseInfoView.prototype.displayHouseTitle = function (house) {
+  const titleSelect = document.querySelector('#title');
+  const titleStringy = JSON.stringify(house.name);
+  console.log(titleStringy);
+  titleSelect.innerText  = titleStringy;
+};
 
 HouseInfoView.prototype.createHeader = function (name) {
   const h3 = document.createElement('h3');
@@ -193,7 +215,7 @@ HouseInfoView.prototype.createHeader = function (name) {
 
 HouseInfoView.prototype.createUnorderedList = function () {
   const ul = document.createElement('ul');
-  this.container.appendChild(ul);
+  // this.container.appendChild(ul);
   return ul;
 }
 

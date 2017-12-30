@@ -1,18 +1,26 @@
 
-const HouseInfoView = function(data) {
-  this.data = data;
+const HouseInfoView = function(container) {
+  this.container = container;
 }
 
 HouseInfoView.prototype.render = function (houses) {
   houses.forEach(function (house) {
-    const header = this.createHeader(house.name)
-    const ul = this.createUnorderedList();
-    this.createListItem('Region', house.region, ul);
-    this.createListItem('Coat of Arms', house.coatOfArms, ul);
-    this.createListItem('Words', house.words, ul);
-    this.createListItem('Titles', house.titles.join(', '), ul);
-  }.bind(this));
+  document
+  const header = this.createHeader(house.name)
+  const ul = this.createUnorderedList();
+  this.createListItem('Region', house.region, ul);
+  this.createListItem('Coat of Arms', house.coatOfArms, ul);
+  this.createListItem('Words', house.words, ul);
+  this.createListItem('Titles', house.titles.join(', '), ul);
+}.bind(this));
 }
+
+HouseInfoView.prototype.displayHouseTitle = function (house) {
+  const titleSelect = document.querySelector('#title');
+  const titleStringy = JSON.stringify(house.name);
+  console.log(titleStringy);
+  titleSelect.innerText  = titleStringy;
+};
 
 HouseInfoView.prototype.createHeader = function (name) {
   const h3 = document.createElement('h3');
@@ -22,7 +30,7 @@ HouseInfoView.prototype.createHeader = function (name) {
 
 HouseInfoView.prototype.createUnorderedList = function () {
   const ul = document.createElement('ul');
-  this.container.appendChild(ul);
+  // this.container.appendChild(ul);
   return ul;
 }
 

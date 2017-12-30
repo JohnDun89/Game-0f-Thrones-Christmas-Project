@@ -11,12 +11,26 @@ const app = function () {
   const houseInfoView = new HouseInfoView(container);
   const characterInfo = new CharacterInfo(container);
   const ajax = new Ajax();
-  let pageNumber = 1;
-  ajax.get(`https://www.anapioficeandfire.com/api/houses?page=${pageNumber}&pageSize=50`, function(data) {
-    pageNumber++;
-    console.log(data);
-    houseInfoView.render(data);
-  });
+
+
+  const showHouses = document.querySelector('#houses-button');
+  showHouses.addEventListener('click',function(){
+    let allHouses = [];
+    let pageNumber = 1;
+    while (pageNumber <= 10) {
+      pageNumber++;
+      ajax.get(`https://www.anapioficeandfire.com/api/houses?page=${pageNumber}&pageSize=50`, function(data) {
+        houseInfoView.render(data);
+        console.log('data',data);
+        console.log('all data',allHouses);
+
+      });
+    }
+
+
+  })
+
+
 
 
   const buttonDeadlyYears = document.querySelector('#character-button');
