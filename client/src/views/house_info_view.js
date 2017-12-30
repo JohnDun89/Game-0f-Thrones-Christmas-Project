@@ -30,7 +30,7 @@ HouseInfoView.prototype.createHeader = function (name) {
 
 HouseInfoView.prototype.createUnorderedList = function () {
   const ul = document.createElement('ul');
-  // this.container.appendChild(ul);
+  this.container.appendChild(ul);
   return ul;
 }
 

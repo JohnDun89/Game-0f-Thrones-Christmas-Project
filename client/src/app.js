@@ -23,11 +23,8 @@ const app = function () {
         houseInfoView.render(data);
         console.log('data',data);
         console.log('all data',allHouses);
-
       });
     }
-
-
   })
 
 

@@ -114,11 +114,8 @@ const app = function () {
         houseInfoView.render(data);
         console.log('data',data);
         console.log('all data',allHouses);
-
       });
     }
-
-
   })
 
 
@@ -215,7 +212,7 @@ HouseInfoView.prototype.createHeader = function (name) {
 
 HouseInfoView.prototype.createUnorderedList = function () {
   const ul = document.createElement('ul');
-  // this.container.appendChild(ul);
+  this.container.appendChild(ul);
   return ul;
 }
 
