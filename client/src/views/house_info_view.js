@@ -4,12 +4,16 @@ const HouseInfoView = function(container) {
 }
 
 HouseInfoView.prototype.render = function (houses) {
+//In here we want somthing to track created regions
+
+//we need to check if the region exists
+
+//if it does, add it to the exisitng tag
+
+//if not break and create a new one
+
   houses.forEach(function (house) {
-    houseRegion = house.region;
-    regionAsTag = houseRegion.replace(/ /g,'-');
-    const region = document.createElement(`${regionAsTag}`);
-    console.log(region);
-    region.innerText = house.region;
+    const region = this.createRegion(house.region);
     const header = this.createHeader(house.name);
     const ul = this.createUnorderedList();
     this.createListItem('Region', house.region, ul);
@@ -18,6 +22,13 @@ HouseInfoView.prototype.render = function (houses) {
     this.createListItem('Titles', house.titles.join(', '), ul);
   }.bind(this));
 
+}
+
+HouseInfoView.prototype.createRegion = function (region) {
+  regionAsTag = region.replace(/ /g,'-');
+  const h1 = document.createElement(`${regionAsTag}`);
+  h1.innerText = region;
+  this.container.appendChild(h1);
 }
 
 HouseInfoView.prototype.createHeader = function (name) {
