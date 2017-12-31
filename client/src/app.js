@@ -24,10 +24,8 @@ const app = function () {
         console.log('data',data);
         console.log('all data',allHouses);
       });
-    }
-  })
-
-
+    };
+  });
 
 
   const buttonDeadlyYears = document.querySelector('#character-button');
@@ -42,10 +40,9 @@ const app = function () {
         console.log('allDeaths', allDeaths);
         formatedHousesForChart = houseInfoView.chartPopulator(allDeaths);
         chart.lineChart(formatedHousesForChart,'Most Deadly Years');
-      })
-    }
-
-  })
+      });
+    };
+  });
 
   const button = document.querySelector('#more-houses');
   button.addEventListener('click', function() {
@@ -58,10 +55,9 @@ const app = function () {
         _.merge(allOcurances, wordCount)
         formatedHousesForChart = houseInfoView.chartPopulator(allOcurances)
         chart.lineChart(formatedHousesForChart, "House words Occurace");
-      })
-    }
-
-  })
+      });
+    };
+  });
 
   const loyaltyButton = document.querySelector('#loyalty-button');
   loyaltyButton.addEventListener('click', function() {
@@ -75,9 +71,9 @@ const app = function () {
         _.merge(allHouses, onePageOfCharacters);
         formatedData = characterInfo.houseLoyalty(allHouses);
         chart.lineChart(formatedData);
-      })
-    }
-  })
+      });
+    };
+  });
 
   //-----------------------------------------------------------API appending code.
 };
